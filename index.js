@@ -217,6 +217,7 @@ function SpotifyWebHelper(opts) {
 			}
 		});
 	};
+	this.player.unpause = () => this.player.pause(true);
 	this.player.play = spotifyUri => {
 		if (!spotifyUri || (this.status && this.status.track && this.status.track.track_resource && this.status.track.track_resource.uri === spotifyUri)) {
 			this.player.pause(true);
