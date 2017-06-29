@@ -9,6 +9,7 @@ const processExists = require('process-exists');
 
 var spotifyWebHelperWinProcRegex;
 
+// Request variables
 const START_HTTPS_PORT = 4370;
 const END_HTTPS_PORT = 4379;
 const START_HTTP_PORT = 4380;
@@ -16,7 +17,6 @@ const END_HTTP_PORT = 4389;
 const RETURN_ON = ['login', 'logout', 'play', 'pause', 'error', 'ap'];
 const DEFAULT_RETURN_AFTER = 60;
 const FAKE_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36';
-
 const ORIGIN_HEADER = {Origin: 'https://open.spotify.com'};
 const KEEPALIVE_HEADER = {Connection: 'keep-alive', Origin: 'https://open.spotify.com'};
 
@@ -153,6 +153,7 @@ function SpotifyWebHelper(opts) {
 			});
 		});
 	};
+	// Generates Spotify web helper's url
 	this.generateSpotifyUrl = function (url) {
 		var protocol = 'https://';
 		if (localPort >= START_HTTP_PORT && localPort <= END_HTTP_PORT) {
@@ -160,6 +161,7 @@ function SpotifyWebHelper(opts) {
 		}
 		return util.format('%s%s:%d%s', protocol, '127.0.0.1', localPort, url);
 	};
+	// Fetches an OAuth token from Spotify
 	this.getOauthToken = function () {
 		return new Promise(function (resolve, reject) {
 			getJSON({
@@ -171,6 +173,7 @@ function SpotifyWebHelper(opts) {
 			.catch(reject);
 		});
 	};
+	// Checks for error and emits error if true
   this.checkForError = status => {
     if (!status.open_graph_state) {
       this.player.emit('error', new Error('No user logged in'));
@@ -182,6 +185,7 @@ function SpotifyWebHelper(opts) {
     }
     return false;
   };
+	// Detects the port Spotify web helper is running on
 	this.detectPort = function () {
 		return getJSON({
 			url: this.generateSpotifyUrl('/service/version.json'),
@@ -203,7 +207,9 @@ function SpotifyWebHelper(opts) {
 		});
 	};
 
+	// The Spotify player object
 	this.player = new EventEmitter();
+	// Pause function which unpauses when passed true
 	this.player.pause = unpause => {
 		return getJSON({
 			url: this.generateSpotifyUrl('/remote/pause.json'),
@@ -217,7 +223,9 @@ function SpotifyWebHelper(opts) {
 			}
 		});
 	};
+	// Unpauses playback
 	this.player.unpause = () => this.player.pause(true);
+	// Begins playing a track or seek on current track if the same uri
 	this.player.play = spotifyUri => {
 		if (!spotifyUri || (this.status && this.status.track && this.status.track.track_resource && this.status.track.track_resource.uri === spotifyUri)) {
 			this.player.pause(true);
@@ -251,6 +259,7 @@ function SpotifyWebHelper(opts) {
 	var stopSeekingInterval = function () {
 		clearInterval(seekingInterval);
 	};
+	// Used to compare incoming statuses and emit events accordingly
 	this.compareStatus = function (status) {
     let hasError = this.checkForError(status);
     if (hasError) {
