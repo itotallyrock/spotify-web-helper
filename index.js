@@ -1,24 +1,24 @@
-var EventEmitter = require('events').EventEmitter;
-var childProcess = require('child_process');
-var qs = require('querystring');
-var os = require('os');
-var path = require('path');
-var util = require('util');
-var got = require('got');
-var processExists = require('process-exists');
+const EventEmitter = require('events').EventEmitter;
+const childProcess = require('child_process');
+const qs = require('querystring');
+const os = require('os');
+const path = require('path');
+const util = require('util');
+const got = require('got');
+const processExists = require('process-exists');
 
 var spotifyWebHelperWinProcRegex;
 
-var START_HTTPS_PORT = 4370;
-var END_HTTPS_PORT = 4379;
-var START_HTTP_PORT = 4380;
-var END_HTTP_PORT = 4389;
-var RETURN_ON = ['login', 'logout', 'play', 'pause', 'error', 'ap'];
-var DEFAULT_RETURN_AFTER = 60;
-var FAKE_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36';
+const START_HTTPS_PORT = 4370;
+const END_HTTPS_PORT = 4379;
+const START_HTTP_PORT = 4380;
+const END_HTTP_PORT = 4389;
+const RETURN_ON = ['login', 'logout', 'play', 'pause', 'error', 'ap'];
+const DEFAULT_RETURN_AFTER = 60;
+const FAKE_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36';
 
-var ORIGIN_HEADER = {Origin: 'https://open.spotify.com'};
-var KEEPALIVE_HEADER = {Connection: 'keep-alive', Origin: 'https://open.spotify.com'};
+const ORIGIN_HEADER = {Origin: 'https://open.spotify.com'};
+const KEEPALIVE_HEADER = {Connection: 'keep-alive', Origin: 'https://open.spotify.com'};
 
 var SEEK_INTERVAL_LENGTH = 250;
 
