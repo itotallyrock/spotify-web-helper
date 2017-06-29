@@ -34,6 +34,7 @@ helper.player.on('ready', () => {
   // Playback control. These methods return promises
   helper.player.play('spotify:track:4uLU6hMCjMI75M1A2tKUQC');
   helper.player.pause();
+  helper.player.unpause();
   helper.player.seekTo(60); // 60 seconds
 
   // Get current playback status, including up to date playing position
@@ -99,6 +100,9 @@ object as first argument.
 
 #### player.pause([unpause]);
  - `unpause` `<boolean>` `true` to resume playback. Default is false.
+ - Returns `<Promise<`[`SpotifyStatus`](#typedef-spotifystatus)`>>`
+
+#### player.unpause();
  - Returns `<Promise<`[`SpotifyStatus`](#typedef-spotifystatus)`>>`
 
 #### player.play(spotifyUri);
