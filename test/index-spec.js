@@ -8,9 +8,12 @@ test.beforeEach(() => {
 })
 
 test('generateSpotifyUrl works as expected', t => {
-  let url = '/some/url/to/test.filetype'
-  let generatedUrl = spotify.generateSpotifyUrl(url)
-  // NOTE: This is a rough regex, we may want to check ports more precisely
+  let urlPath = '/some/url/to/test.filetype'
+  let generatedUrl = spotify.generateSpotifyUrl(urlPath)
+  let port = (/:(\d+)(\/)?/gi).exec(generatedUrl)[1]
+
   t.regex(generatedUrl, /^(http(s)?:\/\/)(127\.0\.0\.1)(:)([0-9]{1,5})(\/[A-z0-9]+)+(\.[A-z0-9]+)+$/g, 'Not a valid url')
-  t.true(generatedUrl.endsWith(url), 'Generated url doesn\'t match')
+  t.true(port >= 1 && port <= 65535, 'Not a valid port')
+  t.true(port >= 4370 && port <= 4389, 'Not a valid Spotify port')
+  t.true(generatedUrl.endsWith(urlPath), 'Generated url doesn\'t match')
 })
