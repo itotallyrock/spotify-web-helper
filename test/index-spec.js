@@ -1,4 +1,5 @@
 import test from 'ava'
+import sinon from 'sinon'
 import SpotifyWebHelper from '../index'
 
 let spotify
@@ -24,4 +25,31 @@ test('generateSpotifyUrl works as expected', t => {
   t.true(port >= 1 && port <= 65535, 'Not a valid port')
   t.true(port >= 4370 && port <= 4389, 'Not a valid Spotify port')
   t.true(generatedUrl.endsWith(urlPath), 'Generated url doesn\'t match')
+})
+
+test('checkForError works as expected', t => {
+  let testError = 'Testing Error'
+  let loggedOutError = 'No user logged in'
+  let workingStatus = {
+    open_graph_state: {}
+  }
+  let loggedOutStatus = {}
+  let errorStatus = {
+    open_graph_state: {},
+    error: new Error(testError)
+  }
+
+  let errorEmitted = sinon.spy()
+  spotify.player.on('error', errorEmitted)
+
+  t.is(spotify.checkForError(workingStatus), false)
+  t.true(errorEmitted.notCalled)
+
+  t.is(spotify.checkForError(loggedOutStatus), true)
+  t.true(errorEmitted.calledOnce)
+  t.is(errorEmitted.lastCall.args[0].message, loggedOutError)
+
+  t.is(spotify.checkForError(errorStatus), true)
+  t.true(errorEmitted.calledTwice)
+  t.is(errorEmitted.lastCall.args[0].message, testError)
 })
