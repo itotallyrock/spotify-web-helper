@@ -2,13 +2,12 @@ import test from 'ava'
 import sinon from 'sinon'
 import SpotifyWebHelper from '../index'
 
-let spotify
-
-test.beforeEach(() => {
-  spotify = new SpotifyWebHelper()
+test.beforeEach(t => {
+  t.context.spotify = new SpotifyWebHelper()
 })
 
 test('ensureSpotifyWebHelper works as expected', async t => {
+  let {spotify} = t.context
   let promise = spotify.ensureSpotifyWebHelper()
   t.true(promise instanceof Promise, 'Doesn\'t return a promise')
 
@@ -17,6 +16,7 @@ test('ensureSpotifyWebHelper works as expected', async t => {
 })
 
 test('generateSpotifyUrl works as expected', t => {
+  let {spotify} = t.context
   let urlPath = '/some/url/to/test.filetype'
   let generatedUrl = spotify.generateSpotifyUrl(urlPath)
   let port = (/:(\d+)(\/)?/gi).exec(generatedUrl)[1]
@@ -28,6 +28,7 @@ test('generateSpotifyUrl works as expected', t => {
 })
 
 test('checkForError works as expected', t => {
+  let {spotify} = t.context
   let testError = 'Testing Error'
   let loggedOutError = 'No user logged in'
   let workingStatus = {
