@@ -43,14 +43,14 @@ test('checkForError works as expected', t => {
   let errorEmitted = sinon.spy()
   spotify.player.on('error', errorEmitted)
 
-  t.is(spotify.checkForError(workingStatus), false)
-  t.true(errorEmitted.notCalled)
+  t.is(spotify.checkForError(workingStatus), false, 'Didn\'t expect an error')
+  t.true(errorEmitted.notCalled, 'Error was emitted when not expected')
 
-  t.is(spotify.checkForError(loggedOutStatus), true)
-  t.true(errorEmitted.calledOnce)
-  t.is(errorEmitted.lastCall.args[0].message, loggedOutError)
+  t.is(spotify.checkForError(loggedOutStatus), true, 'Expected an error')
+  t.true(errorEmitted.calledOnce, 'Error emitted wasn\'t called once')
+  t.is(errorEmitted.lastCall.args[0].message, loggedOutError, 'Error emitted was sent with a different error')
 
-  t.is(spotify.checkForError(errorStatus), true)
-  t.true(errorEmitted.calledTwice)
-  t.is(errorEmitted.lastCall.args[0].message, testError)
+  t.is(spotify.checkForError(errorStatus), true, 'Expected an error')
+  t.true(errorEmitted.calledTwice, 'Error emitted wasn\'t called twice')
+  t.is(errorEmitted.lastCall.args[0].message, testError, 'Error emitted was sent with a different error')
 })
