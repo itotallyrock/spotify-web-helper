@@ -4,7 +4,7 @@
   "description": "Control Spotify from node!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"No tests\" && exit 0"
+    "test": "ava"
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,8 @@
   },
   "engines": {
     "node": ">=4"
+  },
+  "devDependencies": {
+    "ava": "^0.21.0"
   }
 }
