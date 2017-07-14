@@ -7,6 +7,14 @@ test.beforeEach(() => {
   spotify = new SpotifyWebHelper()
 })
 
+test('ensureSpotifyWebHelper works as expected', async t => {
+  let promise = spotify.ensureSpotifyWebHelper()
+  t.true(promise instanceof Promise, 'Doesn\'t return a promise')
+
+  let response = await promise
+  t.true(typeof response === 'boolean', 'Doesn\'t resolve a boolean')
+})
+
 test('generateSpotifyUrl works as expected', t => {
   let urlPath = '/some/url/to/test.filetype'
   let generatedUrl = spotify.generateSpotifyUrl(urlPath)

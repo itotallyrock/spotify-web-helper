@@ -144,7 +144,7 @@ function SpotifyWebHelper(opts) {
 			isSpotifyWebHelperRunning()
 			.then(isRunning => {
 				if (isRunning) {
-					return resolve();
+					return resolve(true);
 				}
 				return startSpotifyWebHelper();
 			})
