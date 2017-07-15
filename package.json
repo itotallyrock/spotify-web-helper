@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "ava": "^0.21.0",
+    "nock": "^9.0.13",
     "sinon": "^2.3.8"
   }
 }
